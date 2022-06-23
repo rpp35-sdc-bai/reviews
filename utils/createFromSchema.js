@@ -12,7 +12,7 @@ const config = {
     password: 'postgrespw',
     host: 'localhost',
     database: 'reviews',
-    port: 49154
+    port: 55001
 }
 
 const client = new Client(config)
@@ -24,7 +24,7 @@ async function connection () {
         console.log('Connection Success'.blue)
         console.log('Attempting to create schema'.yellow)
         // Create tables
-        await createSchema() 
+        await createSchema()
     } catch (err) {
         console.log("Encountered ERROR:".red, err)
     }
@@ -108,6 +108,4 @@ async function createSchema () {
 
 connection();
 
-console.log('Bye Bye'.green)
-process.exit(1);
 
