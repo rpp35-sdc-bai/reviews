@@ -12,7 +12,7 @@ const config = {
     password: 'postgrespw',
     host: 'localhost',
     database: 'reviews',
-    port: 55001
+    port: 55002
 }
 
 const client = new Client(config)
@@ -37,13 +37,16 @@ async function createSchema () {
         const createReviewTable = {
             text: `CREATE TABLE reviews (
                 review_id INT UNIQUE NOT NULL,
-                summary CHAR[100],
+                product_id INT NOT NULL,
+                summary VARCHAR(255),
                 recommended BOOL,
-                response INT,
-                body CHAR[255],
+                response VARCHAR(255),
+                body VARCHAR(255),
                 date DATE NOT NULL,
-                reviewer_name CHAR[50] NOT NULL,
-                helpfullness INT,
+                reported BOOL,
+                reviewer_name VARCHAR(50) NOT NULL,
+                reviewer_email VARCHAR(50),
+                helpfulness INT,
                 PRIMARY KEY(review_id)
             ) ;`,
             name: 'reviews'
@@ -53,7 +56,7 @@ async function createSchema () {
             text: `CREATE TABLE photos (
                 photo_id INT UNIQUE NOT NULL,
                 review_id INT NOT NULL,
-                url CHAR[255],
+                url VARCHAR(255),
                 PRIMARY KEY (photo_id),
                 CONSTRAINT fk_reviews
                     FOREIGN KEY(review_id)
@@ -101,6 +104,7 @@ async function createSchema () {
             }
         }
         console.log('Ran Tables Queries without error'.blue)
+        process.exit(1);
     } catch(err){
         throw err
     }
