@@ -16,16 +16,16 @@ const Review = sequelize.define('Review', {
         allowNull: false,
     },
     summary: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING(500)
     },
     recommended: {
         type: DataTypes.BOOLEAN
     },
     response: {
-        type:DataTypes.STRING
+        type:DataTypes.STRING(500)
     },
     body: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING(500)
     },
     date: {
         type: DataTypes.DATE,
