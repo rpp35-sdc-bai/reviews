@@ -6,6 +6,8 @@ const {Op} = require('sequelize');
 const Review = require('../models/Review');
 
 const metaParser = require('../lib/metaParser');
+const reviewParser = require('../lib/reviewParser');
+const incrementValue = require('../lib/incrementvalue')
 
 const catchAsync = require('../middleware/catchAsync')
 
@@ -16,20 +18,7 @@ router.get('/', catchAsync( async (req, res, next) => {
         next(err)
     }
     try{
-        const reviews = await Review.findAll({
-            // set the limit to the limit the user specified or 5 (the default)
-            limit: count || 5,
-            where:{
-                product_id:{
-                    [Op.eq]: productId
-                }
-            }
-        })
-        const response = {
-            "product": productId,
-            "results": reviews
-
-        }
+        const response = await reviewParser(productId)
         res.json(response)
     } catch(err){
         next(err)
@@ -68,19 +57,36 @@ router.get('/meta', catchAsync( async (req,res,next) => {
         next(err)
     }
     try{
-        const reviews = await Review.findAll({
-            where: {
-                product_id: {
-                    [Op.eq] : productId
-                }
-            }
-        })
-        const r = metaParser(reviews)
-        res.json( r );
+        const r = await metaParser(productId)
+        res.json(r)
     }catch (err) {
         next(err)
     }
 }));
+
+// mark a review as helpful
+router.put('/:review_id/helpful', catchAsync ( async (req,res,next) => {
+    const {review_id} = req.params
+    try{
+        const r = await incrementValue('reviews', 'helpfulness', 'review_id', review_id)
+        res.status(204).send()
+    } catch (err) {
+        next(err)
+    }
+
+}));
+
+// mark a review as reported
+router.put('/:review_id/report', catchAsync( async (req,res,next) => {
+    const {review_id} = req.params
+    try{
+        const r = await incrementValue('reviews', 'reported', 'review_id', review_id)
+        res.status(204).send()
+    } catch (err) {
+        next(err)
+    }
+}));
+
 
 
 module.exports = router

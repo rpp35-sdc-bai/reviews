@@ -8,9 +8,6 @@ const port = /* env.process.PORT || */ 3000;
 // or else you will have no body in your requests
 app.use(express.json())
 
-
-app.use('/products', require('./routes/characteristics'))
-app.use('/photos', require('./routes/photos'))
 app.use('/reviews', require('./routes/reviews'))
 app.use('/utils', require('./routes/utils'))
 

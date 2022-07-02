@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 
 const config = require('../config');
 
-
+// re-sync all the tables
 router.get('/reset', async (req,res,next) => {
     try{
         const sequelize = await new Sequelize(config)
@@ -15,5 +15,13 @@ router.get('/reset', async (req,res,next) => {
     }
 })
 
+// not sure I can do all the tables as once with out running out of ram
+// might need to split this up table by table
+
+
+// run the seeder
+router.get('/seed', (req,res,next) => {
+
+})
 
 module.exports = router
