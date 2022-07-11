@@ -54,7 +54,8 @@ module.exports = (sequelize) => {
     }, {
         sequelize,
         tableName: 'reviews',
-        modelName: 'Review'
+        modelName: 'Review',
+        timestamps: false
     });
 
     const Photo = sequelize.define('Photo',{
@@ -79,7 +80,8 @@ module.exports = (sequelize) => {
     }, {
         sequelize,
         tableName: 'photos',
-        modelName: 'Photo'
+        modelName: 'Photo',
+        timestamps: false
     });
 
     const Characteristic = sequelize.define('Characteristic',{
@@ -100,7 +102,8 @@ module.exports = (sequelize) => {
     }, {
         sequelize,
         tableName: 'characteristic',
-        modelName: 'Characteristic'
+        modelName: 'Characteristic',
+        timestamps: false
     });
 
     const CharacteristicReview = sequelize.define('CharacteristicReview',{
@@ -129,17 +132,19 @@ module.exports = (sequelize) => {
     }, {
         sequelize,
         tableName: 'characteristic_reviews',
-        modelName: 'CharacteristicReview'
+        modelName: 'CharacteristicReview',
+        timestamps: false
     });
     
 
-    Review.hasMany(Photo)
+    Review.hasMany(Photo, {as: 'photos'})
     // stands for review id
     Photo.belongsTo(Review, {
         foreignKey: {
             name: 'rid',
             allowNull: false
-          }
+          },
+        as: 'review'
     })
 
     sequelize.sync({alter: true});

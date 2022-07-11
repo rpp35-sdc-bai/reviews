@@ -15,19 +15,20 @@ class ReviewService {
 
     // get all the reviews related to a product id
     async getReviews (req, res, next) {
-        const {productId, count = 5, page = 0, sort} = req.query
+        const {productId, count=5, page=0, sort} = req.query
         if(!productId){
             const err = new Error('No Product Specified')
             next(err)
         }
         try{
             const reviews = this.models.Review.findAll({
-                include:[{
-                    model: this.models.Photo,
-                    foreignKey: 'rid',
-                    as: 'Photos',
-                    attributes: ['url', 'review_id']
-                }],
+                limit: count,
+                include:[
+                    {
+                        model: this.models.Photo,
+                        as: 'photos',
+                    }
+                ],
                 where: {
                     product_id:{
                         [Op.eq]: productId

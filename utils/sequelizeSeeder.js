@@ -72,5 +72,5 @@ const models = [reviewService.models.Review, reviewService.models.Photo, reviewS
 
 // readCSV(reviewPath, models[0])
 // readCSV(photosPath, models[1])
-readCSV(characterReviewPath, models[2])
+// readCSV(characterReviewPath, models[2])
 // readCSV(characterPath, models[3])
