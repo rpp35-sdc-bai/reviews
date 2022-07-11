@@ -1,16 +1,19 @@
 const express = require('express')
 const router = express.Router()
-const Sequelize = require('sequelize');
 
-const config = require('../config');
+const config = require('../config')
 
-// re-sync all the tables
+const ReviewService = require('../services/reviewService');
+
+const reviewService = new ReviewService(config.client)
+
+// Drop everything and re-sync all the tables
 router.get('/reset', async (req,res,next) => {
     try{
-        const sequelize = await new Sequelize(config)
-        sequelize.sync({force:true})
+        await reviewService.reset()
         res.json({message: 'Success'})
     } catch (err) {
+        console.log(err)
         res.status(500).json({message: "Error", stack: err})
     }
 })

@@ -1,48 +1,27 @@
 const express = require('express');
-
 const router = express.Router()
 
-const {Op} = require('sequelize');
-const Review = require('../models/Review');
-
-const metaParser = require('../lib/metaParser');
-const reviewParser = require('../lib/reviewParser');
-const incrementValue = require('../lib/incrementvalue')
+const ReviewService = require('../services/reviewService')
+const config = require('../config')
 
 const catchAsync = require('../middleware/catchAsync')
 
+// new instance of service with our connected instance of sequelize passed in
+const reviewService = new ReviewService(config.client)
+
 router.get('/', catchAsync( async (req, res, next) => {
-    const {productId, count, page, sort} = req.params
-    if(!productId){
-        const err = new Error('No Product Specified')
-        next(err)
-    }
     try{
-        const response = await reviewParser(productId)
+        const response = await reviewService.getReviews(req, res, next)
         res.json(response)
     } catch(err){
         next(err)
     }
-
 }));
 
 // create a new review
 router.post('/', catchAsync( async (req, res, next) => {
     try{
-    const {
-        review_id,
-        product_id,
-        summary,
-        body,
-        response,
-        recommended,
-        reported,
-        date,
-        reviewer_email,
-        reviewer_name,
-        helpfulness
-        } = req.body
-        const review = Review.create({review_id, product_id, summary, body, response, recommended, reported, date, reviewer_email, reviewer_name, helpfulness})
+        const review = await reviewService.createReview(req, res, next)
         res.status(201).json({message: 'Success'})
     } catch (err) {
         next(err)
@@ -51,13 +30,8 @@ router.post('/', catchAsync( async (req, res, next) => {
 
 // /reviews/meta - return the meta data for a specified product
 router.get('/meta', catchAsync( async (req,res,next) => {
-    const {productId} = req.query
-    if(!productId){
-        const err = new Error('No Product Specified')
-        next(err)
-    }
     try{
-        const r = await metaParser(productId)
+        const r = await reviewService.getMetaData(req,res,next)
         res.json(r)
     }catch (err) {
         next(err)
@@ -66,9 +40,8 @@ router.get('/meta', catchAsync( async (req,res,next) => {
 
 // mark a review as helpful
 router.put('/:review_id/helpful', catchAsync ( async (req,res,next) => {
-    const {review_id} = req.params
     try{
-        const r = await incrementValue('reviews', 'helpfulness', 'review_id', review_id)
+        await reviewService.markHelpful(req,res,next)
         res.status(204).send()
     } catch (err) {
         next(err)
@@ -78,9 +51,8 @@ router.put('/:review_id/helpful', catchAsync ( async (req,res,next) => {
 
 // mark a review as reported
 router.put('/:review_id/report', catchAsync( async (req,res,next) => {
-    const {review_id} = req.params
     try{
-        const r = await incrementValue('reviews', 'reported', 'review_id', review_id)
+        await reviewService.markReport(req,res,next)
         res.status(204).send()
     } catch (err) {
         next(err)
