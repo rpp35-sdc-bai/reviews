@@ -23,12 +23,7 @@ class ReviewService {
         try{
             const reviews = this.models.Review.findAll({
                 limit: count,
-                include:[
-                    {
-                        model: this.models.Photo,
-                        as: 'photos',
-                    }
-                ],
+                include: 'photos',
                 where: {
                     product_id:{
                         [Op.eq]: productId

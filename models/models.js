@@ -137,7 +137,11 @@ module.exports = (sequelize) => {
     });
     
 
-    Review.hasMany(Photo, {as: 'photos'})
+    Review.hasMany(Photo, {
+        as: 'photos',
+        foreignKey: 'review_id',
+        attributes: ['photo_id', 'review_id', 'url']
+    })
     // stands for review id
     Photo.belongsTo(Review, {
         foreignKey: {
