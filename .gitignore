@@ -1,3 +1,4 @@
 node_modules
 seedData
 config.js
+.nyc_output

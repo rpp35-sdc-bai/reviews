@@ -15,22 +15,29 @@ class ReviewService {
 
     // get all the reviews related to a product id
     async getReviews (req, res, next) {
-        const {productId, count=5, page=0, sort} = req.query
-        if(!productId){
+        const {product_id, count=5, page=0, sort} = req.query
+        console.log('**RECIEVED**'.yellow, req.query)
+        if(!product_id){
             const err = new Error('No Product Specified')
             next(err)
         }
         try{
-            const reviews = this.models.Review.findAll({
+            const reviews = await this.models.Review.findAll({
                 limit: count,
                 include: 'photos',
                 where: {
                     product_id:{
-                        [Op.eq]: productId
+                        [Op.eq]: product_id
                     }
                 }
             })
-            return reviews
+
+            return {
+                product: product_id,
+                page: page,
+                count: count,
+                results: reviews
+            }
         } catch (err) {
             return err
         }
@@ -76,16 +83,16 @@ class ReviewService {
 
     // report metaData for a product Id
     async getMetaData (req,res,next) {
-        const {productId} = req.query
-        if(!productId){
+        const {product_id} = req.query
+        if(!product_id){
             const err = new Error('No Product Specified')
             next(err)
         }
         try{
-            const data = await metaParser(productId, this.models)
+            const data = await metaParser(product_id, this.models)
             return data
         } catch (err) {
-            next(err)  
+            next(err)
         }
 
     }
@@ -99,7 +106,7 @@ class ReviewService {
         } catch (err) {
             next(err)
         }
-    } 
+    }
 
     async markReport (req,res,next) {
         const {review_id} = req.params

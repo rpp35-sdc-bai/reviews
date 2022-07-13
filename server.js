@@ -5,11 +5,11 @@ const config = require('./config');
 
 const app = express()
 
-const port = /* env.process.PORT || */ 3000;
+const port = config.port || 3000;
 
 // connect to database - dont make this async
-function connect (configFile) {
-    const sequelize = new Sequelize(configFile)
+function connect (configFile, options) {
+    const sequelize = new Sequelize(configFile, options)
     try{
         sequelize.authenticate()
         console.log('Connected'.rainbow)
@@ -21,11 +21,16 @@ function connect (configFile) {
     }
 }
 
-config.client = connect(config.url);
+config.client = connect(config.url, config.options);
 
 // make sure you have accept application/json in your headers
 // or else you will have no body in your requests
 app.use(express.json())
+
+// test route
+app.get('/', (req,res,next) => {
+    res.json({message: 'hello world'})
+})
 
 app.use('/reviews', require('./routes/reviews'))
 app.use('/utils', require('./routes/utils'))
@@ -33,3 +38,6 @@ app.use('/utils', require('./routes/utils'))
 app.listen(port, () => {
     console.log(`listening on ${port}`.green)
 })
+
+// for testing
+module.exports = app

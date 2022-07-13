@@ -11,10 +11,10 @@ const path = require('path');
 const csv = require('csv-parser');
 const async = require('async');
 
-const reviewPath = path.resolve(__dirname, '../seedData/csv/reviews.csv');
-const photosPath = path.resolve(__dirname, '../seedData/csv/reviews_photos.csv');
-const characterReviewPath = path.resolve(__dirname, '../seedData/csv/characteristic_reviews.csv');
-const characterPath = path.resolve(__dirname, '../seedData/csv/characteristics.csv');
+const reviewPath = path.resolve(__dirname, '../seedData/reviews.csv');
+const photosPath = path.resolve(__dirname, '../seedData/reviews_photos.csv');
+const characterReviewPath = path.resolve(__dirname, '../seedData/characteristic_reviews.csv');
+const characterPath = path.resolve(__dirname, '../seedData/characteristics.csv');
 
 // connect to database - dont make this async
 function connect (configFile) {
@@ -73,4 +73,4 @@ const models = [reviewService.models.Review, reviewService.models.Photo, reviewS
 // readCSV(reviewPath, models[0])
 // readCSV(photosPath, models[1])
 // readCSV(characterReviewPath, models[2])
-readCSV(characterPath, models[3])
+// readCSV(characterPath, models[3])

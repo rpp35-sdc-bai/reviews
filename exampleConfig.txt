@@ -1,6 +1,8 @@
 export this config object
 
 const config = {
-    url: '[connection string]',
+    port: 0000,
+    url: 'connection string',
+    options: {sequlize options}
     client: null //this will be set at runtime
 }
