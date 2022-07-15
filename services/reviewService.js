@@ -19,7 +19,7 @@ class ReviewService {
         console.log('**RECIEVED**'.yellow, req.query)
         if(!product_id){
             const err = new Error('No Product Specified')
-            next(err)
+            throw err
         }
         try{
             const reviews = await this.models.Review.findAll({
