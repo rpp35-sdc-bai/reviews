@@ -16,7 +16,6 @@ class ReviewService {
     // get all the reviews related to a product id
     async getReviews (req, res, next) {
         const {product_id, count=5, page=0, sort} = req.query
-        console.log('**RECIEVED**'.yellow, req.query)
         if(!product_id){
             const err = new Error('No Product Specified')
             throw err
@@ -45,7 +44,6 @@ class ReviewService {
 
     // create review
     async createReview (req,res,next) {
-        console.log(req.body)
         const {
             review_id,
             product_id,

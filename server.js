@@ -5,11 +5,11 @@ const config = require('./config');
 
 const app = express()
 
-const port = config.port || 3000;
+const port = config.serverPort || 3000;
 
 // connect to database - dont make this async
-function connect (configFile, options) {
-    const sequelize = new Sequelize(configFile, options)
+function connect (db, user, pass, config) {
+    const sequelize = new Sequelize(db, user, pass, config)
     try{
         sequelize.authenticate()
         console.log('Connected'.rainbow)
@@ -21,7 +21,13 @@ function connect (configFile, options) {
     }
 }
 
-config.client = connect(config.url, config.options);
+config.client = connect(config.database, config.username, config.password, {
+    dialect: 'postgres',
+    host: config.options.host,
+    port: config.options.port,
+    logging:false,
+    pool: config.options.pool
+});
 
 // make sure you have accept application/json in your headers
 // or else you will have no body in your requests

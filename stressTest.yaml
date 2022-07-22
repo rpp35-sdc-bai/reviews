@@ -1,16 +1,23 @@
 config:
     target: "http://localhost:3000"
+    http:
+      pool: 20
     phases:
-      - duration: 60
-        arrivalRate: 5
+      - duration: 30
+        arrivalRate: 1
         name: Warm up
-      - duration: 120
-        arrivalRate: 5
-        rampTo: 50
-        name: Ramp up load
       - duration: 60
-        arrivalRate: 50
-        name: Sustained load
+        arrivalRate: 10
+        rampTo: 100
+        name: Ramp up load (10)
+      - duration: 60
+        arrivalRate: 100
+        rampTo: 100
+        name: Ramp up load (100)
+      - duration: 60
+        arrivalRate: 1000
+        rampTo: 1000
+        name: Ramp up load (1000)
     payload:
       path: "ids.csv"
       fields:
@@ -22,3 +29,8 @@ scenarios:
     - loop:
       - get:
           url: "/reviews?product_id={{ id }}"
+  - name: "GET Review Meta Data"
+    flow:
+    - loop:
+      - get:
+          url: "/reviews/meta?product_id={{ id }}"

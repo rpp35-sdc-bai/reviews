@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
-            unique: true,
+            unique: true
         },
         product_id:{
             type: DataTypes.INTEGER,
@@ -63,7 +63,6 @@ module.exports = (sequelize) => {
             type: INTEGER,
             allowNull: false,
             primaryKey: true,
-            unique: true,
             autoIncrement: true
         },
         review_id:{
@@ -89,7 +88,6 @@ module.exports = (sequelize) => {
             type: INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            unique: true
         },
         product_id:{
             type:INTEGER,
@@ -111,7 +109,6 @@ module.exports = (sequelize) => {
             type: INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            unique: true
         },
         characteristic_id:{
             type:INTEGER,
@@ -135,14 +132,15 @@ module.exports = (sequelize) => {
         modelName: 'CharacteristicReview',
         timestamps: false
     });
-    
+
 
     Review.hasMany(Photo, {
         as: 'photos',
         foreignKey: 'review_id',
         attributes: ['photo_id', 'review_id', 'url']
     })
-    // stands for review id
+
+    // rid - stands for review id
     Photo.belongsTo(Review, {
         foreignKey: {
             name: 'rid',
@@ -151,5 +149,6 @@ module.exports = (sequelize) => {
         as: 'review'
     })
 
-    sequelize.sync({alter: true});
+    // sequelize.sync({alter: true});
+    sequelize.sync();
 }

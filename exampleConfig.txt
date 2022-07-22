@@ -1,8 +1,21 @@
 export this config object
 
 const config = {
-    port: 0000,
-    url: 'connection string',
-    options: {sequlize options}
+    serverPort: 80,
+    database: 'reviews',
+    username: 'user',
+    password: 'sdfsdfga',
+    options: {
+        host: 'someadress',
+        port:0000,
+        logging:false,
+        pool: {
+            max: 50,
+            min: 0,
+            acquire: 30000,
+            idle: 10000,
+            handleDisconnects: true
+        }
+    },
     client: null //this will be set at runtime
 }

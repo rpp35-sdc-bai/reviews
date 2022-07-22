@@ -17,8 +17,8 @@ const characterReviewPath = path.resolve(__dirname, '../seedData/characteristic_
 const characterPath = path.resolve(__dirname, '../seedData/characteristics.csv');
 
 // connect to database - dont make this async
-function connect (configFile) {
-    const sequelize = new Sequelize(configFile)
+function connect (db, user, pass, config) {
+    const sequelize = new Sequelize(db, user, pass, config)
     try{
         sequelize.authenticate()
         console.log('Connected'.rainbow)
@@ -30,7 +30,13 @@ function connect (configFile) {
     }
 }
 
-config.client = connect(config.url);
+config.client = connect(config.database, config.username, config.password, {
+    dialect: 'postgres',
+    host: config.options.host,
+    port: config.options.port,
+    logging:false,
+    pool: config.options.pool
+});
 
 const reviewService = new ReviewService(config.client)
 
@@ -70,7 +76,7 @@ async function readCSV (path, model) {
 const filePaths = [reviewPath, photosPath, characterReviewPath, characterPath]
 const models = [reviewService.models.Review, reviewService.models.Photo, reviewService.models.CharacteristicReview, reviewService.models.Characteristic]
 
-// readCSV(reviewPath, models[0])
+readCSV(reviewPath, models[0])
 // readCSV(photosPath, models[1])
 // readCSV(characterReviewPath, models[2])
 // readCSV(characterPath, models[3])
