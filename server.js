@@ -2,6 +2,7 @@ const express = require('express');
 const Sequelize = require('sequelize');
 const colors = require('colors');
 const config = require('./config');
+const path = require('path');
 
 const app = express()
 
@@ -33,9 +34,13 @@ config.client = connect(config.database, config.username, config.password, {
 // or else you will have no body in your requests
 app.use(express.json())
 
-// test route
-app.get('/', (req,res,next) => {
-    res.json({message: 'hello world'})
+// Loader io Files for testing
+app.get('/[loaderio txt file]', (req,res,next) => {
+    // the url and file will need to be loaded when recieved from loader io
+    res.sendFile(path.join(__dirname, '[something].txt'));
+})
+app.get('/loader', (req,res, next) => {
+    res.sendFile(path.join(__dirname, './loaderParams.json'));
 })
 
 app.use('/reviews', require('./routes/reviews'))
