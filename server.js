@@ -35,9 +35,9 @@ config.client = connect(config.database, config.username, config.password, {
 app.use(express.json())
 
 // Loader io Files for testing
-app.get('/[loaderio txt file]', (req,res,next) => {
+app.get('/loaderio-d62c4ec2ad01044dc738afa7b6b37576', (req,res,next) => {
     // the url and file will need to be loaded when recieved from loader io
-    res.sendFile(path.join(__dirname, '[something].txt'));
+    res.sendFile(path.join(__dirname, './loaderio-d62c4ec2ad01044dc738afa7b6b37576.txt'));
 })
 app.get('/loader', (req,res, next) => {
     res.sendFile(path.join(__dirname, './loaderParams.json'));
