@@ -5,13 +5,17 @@ const ReviewService = require('../services/reviewService')
 const config = require('../config')
 
 const catchAsync = require('../middleware/catchAsync')
+const checkCache = require('../middleware/checkCache');
 
 // new instance of service with our connected instance of sequelize passed in
 const reviewService = new ReviewService(config.client)
 
-router.get('/', catchAsync( async (req, res, next) => {
+router.get('/', checkCache, catchAsync( async (req, res, next) => {
+    const {product_id} = req.query
+
     try{
         const response = await reviewService.getReviews(req, res, next)
+        await config.redisClient.set( product_id, JSON.stringify(response) );
         res.json(response)
     } catch(err){
         next(err)

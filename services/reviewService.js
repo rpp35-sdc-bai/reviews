@@ -31,12 +31,14 @@ class ReviewService {
                 }
             })
 
-            return {
+            const result = {
                 product: product_id,
                 page: page,
                 count: count,
                 results: reviews
             }
+
+            return result
         } catch (err) {
             return err
         }

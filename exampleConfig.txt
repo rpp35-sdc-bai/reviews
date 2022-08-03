@@ -18,4 +18,6 @@ const config = {
         }
     },
     client: null //this will be set at runtime
+    redisUrl: 'localhost:0000',
+    redisClient: null, // set this at runtime
 }
