@@ -3,3 +3,4 @@ seedData
 config.js
 .nyc_output
 coverage
+newrelic_agent.log

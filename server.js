@@ -3,6 +3,8 @@ const Sequelize = require('sequelize');
 const colors = require('colors');
 const config = require('./config');
 const path = require('path');
+// const createClient = require('redis');
+require('newrelic');
 
 const app = express()
 
@@ -29,6 +31,20 @@ config.client = connect(config.database, config.username, config.password, {
     logging:false,
     pool: config.options.pool
 });
+
+// // Redis stuff
+// const redisConfig = {
+//     url: config.redisUrl
+// }
+
+// const client = createClient();
+
+// client.connect()
+//     .catch(err => {
+//         console.log(err)
+//     })
+
+
 
 // make sure you have accept application/json in your headers
 // or else you will have no body in your requests
